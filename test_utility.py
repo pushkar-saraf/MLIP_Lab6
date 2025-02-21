@@ -35,7 +35,20 @@ def feature_target_sample(housing_data_sample):
     feature_df, target_series = data_preparation(housing_data_sample)
     return (feature_df, target_series)
 
+
 def test_data_split(feature_target_sample):
     return_tuple = data_split(*feature_target_sample)
-    # TODO test if the length of return_tuple is 4
-    raise NotImplemented
+
+    assert len(return_tuple) == 4, "data_split should return four elements (X_train, X_test, y_train, y_test)"
+
+    X_train, X_test, y_train, y_test = return_tuple
+
+    assert X_train.shape[0] > 0, "X_train should not be empty"
+    assert X_test.shape[0] > 0, "X_test should not be empty"
+    assert y_train.shape[0] > 0, "y_train should not be empty"
+    assert y_test.shape[0] > 0, "y_test should not be empty"
+
+    assert X_train.shape[1] == X_test.shape[1], "Feature count mismatch between X_train and X_test"
+
+    total_samples = feature_target_sample[0].shape[0]
+    assert X_train.shape[0] + X_test.shape[0] == total_samples, "Train-test split does not sum up to total samples"
